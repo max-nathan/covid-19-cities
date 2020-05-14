@@ -1,0 +1,5 @@
+# folders to ignore 
+
+docs/** 
+notes/**
+old/**
