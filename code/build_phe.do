@@ -12,11 +12,12 @@ Covid-19 phe data analysis
 * read PHE data from the web 
 ****************************
 
-* r script to pull phe data, kinda ridiculous, but import delim doesn't seem to work rn 
+* r script to pull phe data, kinda ridiculous, but import delim doesn't seem to work on this one 
+* change working directory to your path  
 
 rsource, terminator(END_OF_R) rpath("/usr/local/bin/R") roptions(`"--vanilla"')
 
-	setwd("~/Dropbox/academic/projects/04_Ideas/COVID-19_cities/data/phe/");
+	setwd("~/[path]/covid-19-cities/data/phe/");
 
 	today = Sys.Date();
 	casedata = read.csv("https://coronavirus.data.gov.uk/downloads/csv/coronavirus-cases_latest.csv");
