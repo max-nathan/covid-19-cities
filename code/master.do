@@ -10,22 +10,35 @@ Covid-19 phe data analysis
 
 ---
 
-Master dofile 
+Notes
+
+PHE data now here: 
+* https//coronavirus.data.gov.uk/downloads/csv/coronavirus-cases_latest.csv												
+* https//coronavirus.data.gov.uk/downloads/csv/coronavirus-deaths_latest.csv
+
+ONS controls 
+* MYE population, age structure and popdensity data from here: 
+https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland
+* ONS city-region boundaries taken from Combined Authority geographies: 
+https://www.ons.gov.uk/economy/grossdomesticproductgdp/datasets/regionalgrossdomesticproductcityregions
 
 ---
 
-Created by MN, April 2020 
+Created by MN, May 2020 
 
 -------------------------*/
 
+**************************
 
-* Macros 
+* paths 
 
-global home 		$drop/04_Ideas/COVID-19_cities
+global home 		$drop/04_Ideas/P20_COVID-19_cities/covid-19_cities
+global syntax 		$home/code
 global data 		$home/data
 global results		$home/outputs
 global logdate 		= string(d(`c(current_date)'), "%dCY-N-D")
-
+ 	
+	
 * PHE
 global phe_cases 	$data/phe/coronavirus-cases-latest_$logdate												
 global phe_deaths 	$data/phe/coronavirus-deaths-latest_$logdate												
@@ -42,26 +55,20 @@ global popdensity 	https://www.ons.gov.uk/file?uri=%2fpeoplepopulationandcommuni
 global cr 			https://www.ons.gov.uk/file?uri=%2feconomy%2fgrossdomesticproductgdp%2fdatasets%2fregionalgrossdomesticproductcityregions%2f1998to2018/regionalgrossdomesticproductgdpcityregions.xlsx
 global imd 			https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/833970/File_1_-_IMD2019_Index_of_Multiple_Deprivation.xlsx
 
+**************************
 
 
 * Build 
 
-build_phe 		// Extract the PHE data. Note, daily/cumulative death data is only available at national level 
-build_controls 	// Extract + build ONS etc area vars 
-build_mobility 	// Extract + build Google mobility data // TO DO 
-build_panel 	// Build panel 
+cd $syntax 
+do build_phe.do 		// Extract the PHE data. Note, PHE death data is only available at national level 
+do build_controls_v3.do // Extract + build ONS etc area vars 
+do build_panel.do 		// Merge + build panel 
 
 
 * Analysis 
 
-analysis 
-analysis_ONS_mortality_extra 
+cd $syntax 
+do analysis_v3.do 		// Make the figures
 
-
-* TO DOS
-
-+ cases vs over 60s 
-+ Google mobility stuff 
-	make: build_mobility 
-	=> build_panel 
 
