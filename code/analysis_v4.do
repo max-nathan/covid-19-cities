@@ -198,7 +198,7 @@ restore
 ***************************************
 * Figure 6: OLS binscatters for density
 ***************************************
-
+	
 foreach date in $lockdown $ldate  {
 	
 	binscatter $lhs log_peoplepersqkm_2018 if date==`date',			///
@@ -328,6 +328,34 @@ graph combine 	binscatter_c_$lockdown.gph  binscatter_c_$ldate.gph,			///
 				title("Cases per 100,000 people | IMD rank", size(small))		///	
 				note("Source: PHE, MHCLG, ONS, Census, ASHE, APS. Confirmed hospital cases as of 23 March (L) vs 1 May (R)." "Urban, demographic, IMD, occupation and labour market controls included", size(vsmall))		
 graph export 	"$results/binscatter_controls.png", as(png) replace 	
+	
+	
+	
+
+
+/* 
+
+***************************************
+* Test: run with binsreg not binscatter 
+***************************************
+
+foreach date in $lockdown $ldate  {
+
+binsreg log_cumulative_cases_100k log_peoplepersqkm_2018 if date==`date',  line(3 3) cb(3 3)  ///
+	graphr(c(white)) ylab(,nogrid)								///	
+	ytitle("log cumulative cases", size(small)) 				///
+	xtitle("log population density", size(small))				///		
+	ylab(, labs(small) angle(horizontal)) ylab(,nogrid)  		///	
+	xlab(, labs(small) angle(horizontal)) 	
+	graph save "$results/binsreg_`date'", replace 
+	}
+cd $results	
+graph combine 	binsreg_$lockdown.gph  binsreg_$ldate.gph,					///	
+				title("Cases per 100,000 people | population density, cubic b-spline", size(small))	///	
+				note("Source: PHE, ONS. Confirmed hospital cases as of 23 March (L) vs 1 May (R).", size(vsmall))		
+			
+*/	
+		
 	
 	
 	
