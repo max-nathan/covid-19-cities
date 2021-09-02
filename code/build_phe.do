@@ -4,31 +4,40 @@ Covid-19 phe data analysis
 
 - PHE data 
 - created by MN, May 2020
+- Updated by MN, October 2020
 
 -------------------------*/
+
 
 
 ****************************
 * read PHE data from the web 
 ****************************
 
+* ! this needs to be redone b/c there's some weird formatting change in the cases.csv 
+* NB this dataset is now legacy data 
+* link works, for now I'm downloading the data off the browser, renaming it and moving it into the target directory 
+
+
 * r script to pull phe data, kinda ridiculous, but import delim doesn't seem to work on this one 
 * change working directory to your path  
 
 rsource, terminator(END_OF_R) rpath("/usr/local/bin/R") roptions(`"--vanilla"')
 
-	setwd("~/[path]/covid-19-cities/data/phe/");
+	setwd("~/Dropbox/academic/projects/02_Submitted/P20_COVID-19_cities/covid-19-cities/data/phe/");
 
 	today = Sys.Date();
 	casedata = read.csv("https://coronavirus.data.gov.uk/downloads/csv/coronavirus-cases_latest.csv");
 	cases = "coronavirus-cases-latest";
 	write.csv(casedata, file=paste0(cases, "_", today, ".csv")); 
 
-	deathdata = read.csv("https://coronavirus.data.gov.uk/downloads/csv/coronavirus-deaths_latest.csv");
-	deaths = "coronavirus-deaths-latest";
-	write.csv(deathdata, file=paste0(deaths, "_", today, ".csv")); 
+	* deathdata = read.csv("https://coronavirus.data.gov.uk/downloads/csv/coronavirus-deaths_latest.csv");
+	* deaths = "coronavirus-deaths-latest";
+	* write.csv(deathdata, file=paste0(deaths, "_", today, ".csv")); 
 
 END_OF_R
+
+
 
 
 ************************
@@ -37,12 +46,12 @@ END_OF_R
 
 import delim using "$phe_cases", delim(",") clear 
 
-keep if areatype=="Upper tier local authority"
+keep if areatype=="utla"
 ren areacode lad_code
 ren areaname lad_name
 
-replace daily = "" if daily=="NA"
-destring daily, replace 
+* replace daily = "" if daily=="NA"
+* destring daily, replace 
 
 gen date_stata = date(specimen, "YMD")
 gen date = date(specimen, "YMD")
@@ -57,7 +66,9 @@ destring day, replace
 label var day "Day"
 label var month "Month"
 label var year "Year"
-drop previouslyreporteddailycases changeindailycases previouslyreportedcumulativecase changeincumulativecases areatype
+
+* drop previouslyreporteddailycases changeindailycases previouslyreportedcumulativecase changeincumulativecases areatype
+drop areatype
 
 so lad_code date 
 egen id = group(lad_code)
@@ -69,8 +80,8 @@ save $data/tidy/phe_cases.dta, replace
 
 * PHE deaths: note, daily/cumulative death data is only available at national level 
 
-import delim using "$phe_deaths", delim(",") clear 
-save "$data/phe/phe_deaths_$logdate.dta", replace
+* import delim using "$phe_deaths", delim(",") clear 
+* save "$data/phe/phe_deaths_$logdate.dta", replace
 
 
 

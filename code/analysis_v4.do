@@ -18,7 +18,7 @@ global results		$home/outputs
 
 global logdate 		= string(d(`c(current_date)'), "%dCY-N-D")
  	
-global ldate 		22036	// 1 may, update as per time series required  
+global ldate 		22065	// 30 may, update as per time series required  
 global lockdown		21997	// 23 march 			
 
 global lhs 			log_cumulative_cases_100k
@@ -139,25 +139,25 @@ restore
 * Figure 4: within city-region breakdown 
 ****************************************
 
+
+
 so id date 
 * all city-regions and rest of england
-graph two scatter cumulative_cases_100k date if date<=$ldate, 					///
+graph two scatter cumulative_cases_100k date  if date<=$ldate, 					///
 	ytitle("Cumulative cases / 100k", size(small)) ylab(,nogrid) 				///
-	xtitle(, size(small)) xlab(none)  xtitle("")								///	
+	xtitle(, size(small)) xlab(#4, angle(45))  xtitle("")						///	
 	msymbol(circle_hollow) msize(tiny) mc(blue%80) scheme(plotplainblind)		///
 	by(city_region, r(2) 														///
-	note("Source: PHE. Confirmed hospital cases as of 1 May.", size(vsmall)))	/// 
-	title("Cases per 100,000 people, English city-regions", size(small))				
+	note("Source: Public Health England data for England, 30 January - 30 May. Confirmed hospital cases per 100,000 people for local authorities within city-regions." "City-regions defined using combined authority boundaries and GLA boundary for London.", size(vsmall)))	 				
 graph export "$results/cr_components_`var'.png", as(png) replace 
 	
 * just the city-regions 	
 graph two scatter cumulative_cases_100k date if city_region!="rest of England" & date<=$ldate, 			///
 	ytitle("Cumulative cases / 100k", size(small)) ylab(,nogrid) 				///
-	xtitle(, size(small)) xlab(none)  xtitle("")								///	
+	xtitle(, size(small)) xlab(#4, angle(45))   xtitle("")						///	
 	msymbol(circle_hollow) msize(tiny) mc(blue%80) scheme(plotplainblind)		///	
 	by(city_region, r(3)														///
-	note("Source: PHE. Confirmed hospital cases as of 1 May.", size(vsmall)))	///
-	title("Cases per 100,000 people, English city-regions", size(small))	
+	note("Source: Public Health England data for England, 30 January - 30 May. Confirmed hospital cases per 100,000 people for local authorities within city-regions." "City-regions defined using combined authority boundaries and GLA boundary for London.", size(vsmall)))	 		
 graph export "$results/cr9_components_`var'.png", as(png) replace 	
 
 

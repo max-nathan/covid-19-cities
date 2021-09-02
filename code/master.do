@@ -32,7 +32,7 @@ Created by MN, May 2020
 
 * paths 
 
-global home 		$drop/03_Working/P20_COVID-19_cities/covid-19-cities 		// edit path as needed 
+global home 		$drop/02_Submitted/P20_COVID-19_cities/covid-19-cities 		// edit path as needed 
 global syntax 		$home/code
 global data 		$home/data
 global results		$home/outputs
@@ -69,6 +69,6 @@ do build_panel.do 		// Merge + build panel
 * Analysis 
 
 cd $syntax 
-do analysis_v3.do 		// Make the figures
+do analysis_v5.do 		// Make the figures
 
 
